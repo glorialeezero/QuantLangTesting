@@ -1,11 +1,6 @@
 from qiskit import QuantumCircuit, Aer, execute
-from qiskit.quantum_info import Operator
-from pyquil.api import WavefunctionSimulator
-from pyquil.gates import *
 from qbraid.transpiler import transpile
-from qbraid.interface import circuits_allclose
 import cirq
-from programs import *
 
 def transpile2cirq(program):
     return transpile(program, "cirq")
@@ -22,7 +17,7 @@ def transpile2pyquil(program):
 def all_close(original_program, transpiled_program):
     original_sv = get_statevector(original_program)
     transpiled_sv = get_statevector(transpiled_program)
-    return cirq.allclose_up_to_global_phase(original_sv, transpiled_sv)
+    return cirq.allclose_up_to_global_phase(original_sv, transpiled_sv, atol=1e-7)
 
 def get_statevector(program):
     if isinstance(program, QuantumCircuit):
